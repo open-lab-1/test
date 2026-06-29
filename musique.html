@@ -973,6 +973,7 @@
         // DESSIN / AFFICHAGE RE-RENDU DYNAMIQUE
         // ==========================================
         function renderDJInterface() {
+            playlistState = playlistState.filter(t => t.id !== "RESET_MARKER" && t.title !== "");
             // 1. Calculs & mise à jour des statistiques de base
             const totalCount = playlistState.length;
             const votesCount = playlistState.reduce((acc, t) => acc + (t.votes || 0), 0);
@@ -1156,9 +1157,22 @@
         }
 
         // Purge globale de la base
-        function executePurgeAll() {
+        async function executePurgeAll() {
             playlistState = [];
-            pushStateToServer();
+            
+            try {
+                await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
+                    body: JSON.stringify([{ id: "RESET_MARKER", title: "", artist: "", votes: 0, status: "idle" }])
+                });
+                renderDJInterface();
+            } catch (err) {
+                console.error("Erreur lors de la purge :", err);
+            }
         }
 
         // Fallback démo locale si variables non configurées
