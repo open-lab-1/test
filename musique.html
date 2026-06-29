@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎛️ Régie DJ - Anniversaire Far West</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rye&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           VARIABLES & ARCHITECTURE DE COULEURS
+           ========================================== */
+        :root {
+            --color-bg: #120c08;
+            --color-surface: #1e140f;
+            --color-surface-card: #2a1d15;
+            --color-wood-dark: #3a261c;
+            --color-leather: #5c3a21;
+            --color-beige: #e9dfcc;
+            --color-beige-dark: #bfae93;
+            --color-gold: #d4af37;
+            --color-gold-hover: #f3cf55;
+            --color-green: #2e7d32;
+            --color-green-light: #4caf50;
+            --color-red: #c62828;
+            --color-accent: #a63a19;
+            --font-western: 'Rye', serif;
+            --font-modern: 'Montserrat', sans-serif;
+            --shadow-sm: 0 2px 6px rgba(0,0,0,0.5);
+            --shadow-md: 0 6px 16px rgba(0,0,0,0.7);
+            --border-radius: 12px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* GENERAL RESET */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-modern);
+            background-color: var(--color-bg);
+            color: var(--color-beige);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.4;
+        }
+
+        /* CUSTOM SCROLLBAR FOR DJ MONITOR */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--color-surface);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-wood-dark);
+            border-radius: 5px;
+            border: 2px solid var(--color-surface);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-leather);
+        }
+
+        /* CONTAINER GLOBAL STYLES */
+        .dj-dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* ==========================================
+           HEADER SECTION
+           ========================================== */
+        .dj-header {
+            background: linear-gradient(135deg, var(--color-surface), var(--color-wood-dark));
+            border: 2px solid var(--color-leather);
+            border-radius: var(--border-radius);
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-md);
+            display: table;
+            width: 100%;
+        }
+
+        .header-left {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .header-right {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: right;
+        }
+
+        .dj-main-title {
+            font-family: var(--font-western);
+            font-size: 1.8rem;
+            color: var(--color-gold);
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            margin-bottom: 5px;
+        }
+
+        .sync-indicator {
+            font-size: 0.85rem;
+            color: var(--color-beige-dark);
+        }
+
+        .live-badge {
+            background-color: rgba(46, 125, 50, 0.2);
+            color: var(--color-green-light);
+            border: 1px solid var(--color-green-light);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: pulse-live 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-live {
+            0% { opacity: 0.6; box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+            50% { opacity: 1; box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { opacity: 0.6; box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+
+        /* ==========================================
+           GRID LAYOUT : STATS & TOP 5 (TABLE / BLOCK CONSTRAINTS)
+           ========================================== */
+        .analytics-row {
+            margin-bottom: 25px;
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 15px 0;
+            margin-left: -15px;
+            margin-right: -15px;
+        }
+
+        .stats-column {
+            display: table-cell;
+            width: 65%;
+            vertical-align: top;
+        }
+
+        .side-column {
+            display: table-cell;
+            width: 35%;
+            vertical-align: top;
+        }
+
+        /* STATS CARDS */
+        .stats-grid {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 12px;
+            margin: -12px;
+        }
+
+        .stat-card-cell {
+            display: table-cell;
+            background-color: var(--color-surface);
+            border-left: 4px solid var(--color-gold);
+            border-radius: 8px;
+            padding: 18px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-card-cell.played-card {
+            border-left-color: var(--color-green-light);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--color-beige-dark);
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-family: var(--font-western);
+            font-size: 2.2rem;
+            color: var(--color-beige);
+        }
+
+        /* TOP 5 SIDE PANEL */
+        .top-podium-box {
+            background-color: var(--color-surface);
+            border: 2px dashed var(--color-leather);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            height: 100%;
+        }
+
+        .top-podium-title {
+            font-family: var(--font-western);
+            font-size: 1.1rem;
+            color: var(--color-gold);
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--color-wood-dark);
+            padding-bottom: 6px;
+        }
+
+        .top-list-item {
+            display: table;
+            width: 100%;
+            font-size: 0.85rem;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(233, 223, 204, 0.05);
+        }
+
+        .top-item-rank {
+            display: table-cell;
+            width: 25px;
+            font-weight: 700;
+            color: var(--color-gold);
+        }
+
+        .top-item-details {
+            display: table-cell;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+        }
+
+        .top-item-votes {
+            display: table-cell;
+            text-align: right;
+            font-weight: 700;
+            color: var(--color-accent);
+        }
+
+        /* ==========================================
+           CONTROL PANEL (ACTIONS & FILTERS)
+           ========================================== */
+        .controls-card {
+            background-color: var(--color-surface);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--color-wood-dark);
+        }
+
+        .action-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+            align-items: center;
+        }
+
+        /* BUTTONS STYLES */
+        .btn-dj {
+            background-color: var(--color-wood-dark);
+            color: var(--color-beige);
+            border: 1px solid var(--color-leather);
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-family: var(--font-modern);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-dj:hover {
+            background-color: var(--color-leather);
+            border-color: var(--color-gold);
+        }
+
+        .btn-dj.active-auto {
+            background-color: var(--color-accent);
+            border-color: var(--color-gold);
+            animation: pulse-orange 15s infinite linear;
+        }
+
+        .btn-danger {
+            background-color: rgba(198, 40, 40, 0.2);
+            border-color: var(--color-red);
+            color: #ff8a80;
+            margin-left: auto;
+        }
+
+        .btn-danger:hover {
+            background-color: var(--color-red);
+            color: white;
+        }
+
+        /* FORM ELEMENTS */
+        .search-wrapper {
+            position: relative;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+
+        .input-search {
+            width: 100%;
+            background-color: var(--color-bg);
+            border: 1px solid var(--color-leather);
+            padding: 10px 14px;
+            border-radius: 6px;
+            color: var(--color-beige);
+            font-family: var(--font-modern);
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .input-search:focus {
+            border-color: var(--color-gold);
+        }
+
+        .select-dj {
+            background-color: var(--color-bg);
+            color: var(--color-beige);
+            border: 1px solid var(--color-leather);
+            padding: 10px;
+            border-radius: 6px;
+            font-family: var(--font-modern);
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* FILTER TABS */
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-top: 1px solid var(--color-wood-dark);
+            padding-top: 15px;
+        }
+
+        .tab-item {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--color-beige-dark);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .tab-item:hover {
+            color: var(--color-beige);
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .tab-item.active {
+            background-color: var(--color-gold);
+            color: var(--color-bg);
+            font-weight: 700;
+        }
+
+        /* ==========================================
+           MAIN CARDS TRACK LIST
+           ========================================== */
+        .track-list-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .dj-track-card {
+            background-color: var(--color-surface-card);
+            border-radius: var(--border-radius);
+            padding: 16px 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-wood-dark);
+            display: table;
+            width: 100%;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        /* STATUS SPECIFIC CARDS */
+        .dj-track-card.status-current {
+            border: 2px solid var(--color-gold);
+            background: linear-gradient(135deg, var(--color-surface-card), #352514);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            transform: scale(1.01);
+            z-index: 2;
+        }
+
+        .dj-track-card.status-played {
+            border-left: 6px solid var(--color-green);
+            opacity: 0.65;
+            background-color: #171f18;
+        }
+
+        /* ROW STRUCTURING VIA TABLE FOR ABSOLUTE SAFETY */
+        .track-row {
+            display: table-row;
+        }
+
+        .track-cell-votes {
+            display: table-cell;
+            vertical-align: middle;
+            width: 70px;
+            text-align: center;
+            border-right: 1px solid rgba(233,223,204,0.1);
+            padding-right: 15px;
+        }
+
+        .track-cell-info {
+            display: table-cell;
+            vertical-align: middle;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .track-cell-actions {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: right;
+            width: 320px;
+            white-space: nowrap;
+        }
+
+        /* ELEMENT LEVEL FOR TRACK CARD */
+        .vote-badge-huge {
+            font-family: var(--font-western);
+            font-size: 1.8rem;
+            color: var(--color-gold);
+            display: block;
+        }
+
+        .vote-badge-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--color-beige-dark);
+            font-weight: 700;
+        }
+
+        .track-title-line {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            word-break: break-all;
+        }
+
+        .track-artist-line {
+            font-size: 1rem;
+            color: var(--color-beige-dark);
+            font-weight: 500;
+            margin: 2px 0 6px 0;
+        }
+
+        .track-meta-line {
+            font-size: 0.78rem;
+            color: #9e8e76;
+        }
+
+        .track-meta-line strong {
+            color: var(--color-beige);
+        }
+
+        /* BADGES FOR STATUSES */
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .status-badge.badge-current {
+            background-color: var(--color-gold);
+            color: var(--color-bg);
+            animation: pulse-live 1.5s infinite;
+        }
+
+        .status-badge.badge-played {
+            background-color: var(--color-green);
+            color: white;
+        }
+
+        /* HTML/CSS GRAPHIC BAR CHART EXCLUSIVELY */
+        .vote-graph-bar-container {
+            width: 130px;
+            background-color: rgba(0,0,0,0.4);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 6px;
+            overflow: hidden;
+            display: block;
+        }
+
+        .vote-graph-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-accent), var(--color-gold));
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* ACTION BUTTONS ON CARD */
+        .btn-action-card {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            font-family: var(--font-modern);
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 5px;
+        }
+
+        .btn-action-card.btn-current-action {
+            background-color: transparent;
+            border-color: var(--color-gold);
+            color: var(--color-gold);
+        }
+        .btn-action-card.btn-current-action:hover {
+            background-color: var(--color-gold);
+            color: var(--color-bg);
+        }
+
+        .btn-action-card.btn-played-action {
+            background-color: var(--color-green);
+            color: white;
+        }
+        .btn-action-card.btn-played-action:hover {
+            background-color: var(--color-green-light);
+        }
+
+        .btn-action-card.btn-reset-action {
+            background-color: transparent;
+            border-color: var(--color-beige-dark);
+            color: var(--color-beige);
+        }
+        .btn-action-card.btn-reset-action:hover {
+            background-color: var(--color-wood-dark);
+        }
+
+        .btn-action-card.btn-delete-action {
+            background-color: rgba(198, 40, 40, 0.1);
+            border-color: rgba(198, 40, 40, 0.4);
+            color: #ff8a80;
+        }
+        .btn-action-card.btn-delete-action:hover {
+            background-color: var(--color-red);
+            color: white;
+        }
+
+        .link-btn-card {
+            background-color: #1a237e;
+            color: #c5cae9;
+            border-color: #303f9f;
+            text-decoration: none;
+        }
+        .link-btn-card:hover {
+            background-color: #303f9f;
+            color: white;
+        }
+
+        /* SKELETON & STATE UTILS */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            background-color: var(--color-surface);
+            border-radius: var(--border-radius);
+            border: 1px dashed var(--color-leather);
+            color: var(--color-beige-dark);
+            font-style: italic;
+        }
+
+        /* ==========================================
+           MODAL DE CONFIRMATION PERSONNALISÉ
+           ========================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: rgba(0,0,0,0.85);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .modal-box {
+            background-color: var(--color-surface);
+            border: 3px solid var(--color-accent);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-title {
+            font-family: var(--font-western);
+            color: var(--color-accent);
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+
+        .modal-text {
+            color: var(--color-beige-dark);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        /* RESPONSIVE DESIGN BREAKPOINTS */
+        @media (max-width: 900px) {
+            .analytics-row {
+                display: block;
+                margin-left: 0; margin-right: 0;
+            }
+            .stats-column, .side-column {
+                display: block;
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            .stats-grid {
+                margin: 0;
+                border-spacing: 0 10px;
+            }
+            .stat-card-cell {
+                display: block;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dj-track-card {
+                display: block;
+            }
+            .track-row {
+                display: block;
+            }
+            .track-cell-votes {
+                display: block;
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(233,223,204,0.1);
+                padding-right: 0;
+                padding-bottom: 10px;
+                text-align: left;
+            }
+            .track-cell-info {
+                display: block;
+                padding-left: 0;
+                padding-top: 12px;
+                padding-bottom: 15px;
+            }
+            .track-cell-actions {
+                display: block;
+                width: 100%;
+                text-align: left;
+            }
+            .btn-action-card {
+                margin-left: 0;
+                margin-right: 6px;
+                margin-bottom: 6px;
+            }
+            .btn-danger {
+                margin-left: 0;
+            }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="dj-dashboard">
+        
+        <!-- HEADER REGIE DJ -->
+        <header class="dj-header">
+            <div class="header-left">
+                <h1 class="dj-main-title">🎛️ Suggestions du soir</h1>
+                <div class="sync-indicator">
+                    Dernière synchronisation : <span id="sync-time-lbl">--:--:--</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="live-badge">🟢 Live</div>
+            </div>
+        </header>
+
+        <!-- ANALYTICS CONTAINER ROW -->
+        <div class="analytics-row">
+            
+            <!-- TROIS CARTES STATISTIQUES CENTRALES -->
+            <div class="stats-column">
+                <div class="stats-grid">
+                    <div class="stat-card-cell">
+                        <div class="stat-label">🎵 Suggestions reçues</div>
+                        <div class="stat-value" id="stat-total-tracks">0</div>
+                    </div>
+                    <div class="stat-card-cell">
+                        <div class="stat-label">❤️ Votes totaux</div>
+                        <div class="stat-value" id="stat-total-votes">0</div>
+                    </div>
+                    <div class="stat-card-cell played-card">
+                        <div class="stat-label">✅ Musiques jouées</div>
+                        <div class="stat-value" id="stat-played-tracks">0</div>
+                    </div>
+                </div>
+                
+                <!-- COMPTEUR SECONDAIRE DES PARTICIPANTS -->
+                <div style="margin-top: 15px; font-size: 0.85rem; color: var(--color-beige-dark); background-color: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 6px;">
+                    👤 Estimation de la participation au Saloon : <strong id="stat-total-participants" style="color: var(--color-gold);">0</strong> personne(s).
+                </div>
+            </div>
+
+            <!-- BLOC TOP 5 DES MUSIQUES -->
+            <div class="side-column">
+                <div class="top-podium-box">
+                    <h3 class="top-podium-title">⭐ Top 5 des requêtes</h3>
+                    <div id="top-podium-target">
+                        <!-- Généré en JS -->
+                        <p style="font-size:0.8rem; opacity:0.5;">Aucune donnée disponible...</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ZONE DE CONTRÔLE CENTRALISÉE -->
+        <section class="controls-card">
+            <div class="action-bar">
+                <button type="button" id="btn-manual-sync" class="btn-dj">
+                    🔄 Actualiser
+                </button>
+                <button type="button" id="btn-toggle-auto" class="btn-dj">
+                    ⏱️ Auto-sync (15s) : OUI
+                </button>
+                
+                <div class="search-wrapper">
+                    <input type="text" id="filter-search-input" class="input-search" placeholder="🔍 Rechercher un titre, artiste, invité...">
+                </div>
+
+                <select id="filter-sort-select" class="select-dj">
+                    <option value="votes">Sort : Plus de votes ⬆️</option>
+                    <option value="recent">Sort : Plus récentes 🕒</option>
+                    <option value="old">Sort : Plus anciennes ⏳</option>
+                </select>
+
+                <button type="button" id="btn-trigger-purge" class="btn-dj btn-danger">
+                    🗑️ Tout effacer
+                </button>
+            </div>
+
+            <!-- BARRE DE NAVIGATION DES FILTRES FLUIDES -->
+            <div class="filter-tabs">
+                <button class="tab-item active" data-filter="all">Toutes</button>
+                <button class="tab-item" data-filter="to-play">À jouer</button>
+                <button class="tab-item" data-filter="played">Jouées</button>
+                <button class="tab-item" data-filter="no-link">Sans lien</button>
+                <button class="tab-item" data-filter="has-link">Avec lien</button>
+            </div>
+        </section>
+
+        <!-- CONTAINER PRINCIPAL DU FLUX DE MUSIQUE -->
+        <main id="track-list-container" class="track-list-wrapper">
+            <!-- Injecté de manière asynchrone -->
+            <div class="empty-state">Chargement du flux des requêtes depuis le Saloon...</div>
+        </main>
+
+    </div>
+
+    <!-- MODAL DE CONFIRMATION POUR LA PURGE GLOBALE -->
+    <div id="purge-modal-overlay" class="modal-overlay">
+        <div class="modal-box">
+            <h3 class="modal-title">⚠️ ALERTE AU SALOON !</h3>
+            <p class="modal-text">Es-tu sûr de vouloir effacer l'intégralité de la playlist de la soirée ? Cette action videra définitivement le stockage JSONBin.</p>
+            <div class="modal-actions">
+                <button type="button" id="btn-purge-cancel" class="btn-dj" style="background:transparent;">Annuler</button>
+                <button type="button" id="btn-purge-confirm" class="btn-dj" style="background-color:var(--color-red); border-color:var(--color-red);">Oui, tout purger</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==========================================
+       LOGIQUE METIER & SCRIPTS DE FLUX DJ
+       ========================================== -->
+    <script>
+        // CONFIGURATION PARAMÉTRABLE DU BACKEND JSONBIN
+        const BIN_ID = "6a4260f4da38895dfe0fb93"; // Remplace par ton BIN ID
+        const API_KEY = "$2a$10$JMtaTZvVsh7DqVnO5nSrRO3phGsvXdWV9iGfF4PtO4bVszpNpJsn2"; // Remplace par ton API Key
+        
+        const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+
+        // Variables de synchronisation d'état
+        let playlistState = [];
+        let activeFilter = 'all'; 
+        let activeSort = 'votes';
+        let searchQuery = '';
+        
+        let autoRefreshInterval = null;
+        let isAutoRefreshActive = true;
+
+        // Éléments du DOM
+        const trackListContainer = document.getElementById('track-list-container');
+        const syncTimeLbl = document.getElementById('sync-time-lbl');
+        const statTotalTracks = document.getElementById('stat-total-tracks');
+        const statTotalVotes = document.getElementById('stat-total-votes');
+        const statPlayedTracks = document.getElementById('stat-played-tracks');
+        const statTotalParticipants = document.getElementById('stat-total-participants');
+        const topPodiumTarget = document.getElementById('top-podium-target');
+        
+        const btnManualSync = document.getElementById('btn-manual-sync');
+        const btnToggleAuto = document.getElementById('btn-toggle-auto');
+        const filterSearchInput = document.getElementById('filter-search-input');
+        const filterSortSelect = document.getElementById('filter-sort-select');
+        const purgeModalOverlay = document.getElementById('purge-modal-overlay');
+
+        // Initialisation de la régie
+        window.addEventListener('DOMContentLoaded', () => {
+            initEventListeners();
+            syncPlaylist();
+            startAutoRefresh();
+        });
+
+        // Liaison des écouteurs d'événements
+        function initEventListeners() {
+            // Bouton de synchronisation manuelle
+            btnManualSync.addEventListener('click', () => {
+                syncPlaylist();
+            });
+
+            // Bouton d'interrupteur d'auto-refresh
+            btnToggleAuto.addEventListener('click', () => {
+                isAutoRefreshActive = !isAutoRefreshActive;
+                if (isAutoRefreshActive) {
+                    startAutoRefresh();
+                    btnToggleAuto.innerText = "⏱️ Auto-sync (15s) : OUI";
+                    btnToggleAuto.classList.remove('active-auto');
+                } else {
+                    stopAutoRefresh();
+                    btnToggleAuto.innerText = "⏱️ Auto-sync : COUPÉ";
+                    btnToggleAuto.classList.add('active-auto');
+                }
+            });
+
+            // Saisie barre de recherche fluide
+            filterSearchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase().trim();
+                renderDJInterface();
+            });
+
+            // Menu déroulant de tri
+            filterSortSelect.addEventListener('change', (e) => {
+                activeSort = e.target.value;
+                renderDJInterface();
+            });
+
+            // Onglets de filtrage rapide
+            document.querySelectorAll('.tab-item').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    activeFilter = e.target.getAttribute('data-filter');
+                    renderDJInterface();
+                });
+            });
+
+            // Logique de purge de la boîte
+            document.getElementById('btn-trigger-purge').addEventListener('click', () => {
+                purgeModalOverlay.style.display = 'flex';
+            });
+            document.getElementById('btn-purge-cancel').addEventListener('click', () => {
+                purgeModalOverlay.style.display = 'none';
+            });
+            document.getElementById('btn-purge-confirm').addEventListener('click', () => {
+                purgeModalOverlay.style.display = 'none';
+                executePurgeAll();
+            });
+        }
+
+        // ==========================================
+        // GESTION DES FLUX APIS (GET / PUT)
+        // ==========================================
+        async function syncPlaylist() {
+            if (!BIN_ID || BIN_ID.startsWith("TON_")) {
+                loadBackupLocalDemo();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/latest`, {
+                    method: 'GET',
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                if (!response.ok) throw new Error("Erreur réseau");
+                
+                const data = await response.json();
+                playlistState = Array.isArray(data.record) ? data.record : [];
+                
+                // Heure de mise à jour
+                const d = new Date();
+                syncTimeLbl.innerText = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+                
+                renderDJInterface();
+            } catch (err) {
+                console.error("Erreur serveur lors de la synchronisation :", err);
+            }
+        }
+
+        async function pushStateToServer() {
+            if (!BIN_ID || BIN_ID.startsWith("TON_")) {
+                renderDJInterface();
+                return;
+            }
+
+            try {
+                await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
+                    body: JSON.stringify(playlistState)
+                });
+                renderDJInterface();
+            } catch (err) {
+                console.error("Erreur de sauvegarde de l'état DJ :", err);
+            }
+        }
+
+        // Timer de rafraîchissement
+        function startAutoRefresh() {
+            stopAutoRefresh();
+            autoRefreshInterval = setInterval(syncPlaylist, 15000);
+        }
+        function stopAutoRefresh() {
+            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+        }
+
+        // ==========================================
+        // DESSIN / AFFICHAGE RE-RENDU DYNAMIQUE
+        // ==========================================
+        function renderDJInterface() {
+            // 1. Calculs & mise à jour des statistiques de base
+            const totalCount = playlistState.length;
+            const votesCount = playlistState.reduce((acc, t) => acc + (t.votes || 0), 0);
+            const playedCount = playlistState.filter(t => t.status === 'played').length;
+            
+            // Estimation empirique des participants uniques basés sur les noms distincts
+            const uniqueSenders = new Set(playlistState.map(t => t.sender).filter(s => s));
+            
+            statTotalTracks.innerText = totalCount;
+            statTotalVotes.innerText = votesCount;
+            statPlayedTracks.innerText = playedCount;
+            statTotalParticipants.innerText = uniqueSenders.size > 0 ? uniqueSenders.size : totalCount;
+
+            // Enregistrement du max de votes pour calibrer la taille de la jauge HTML/CSS
+            const maxVotesInDb = playlistState.reduce((max, t) => (t.votes > max ? t.votes : max), 1);
+
+            // 2. Traitement du panneau Top 5
+            const sortedForTop = [...playlistState].sort((a,b) => b.votes - a.votes).slice(0, 5);
+            if (sortedForTop.length === 0) {
+                topPodiumTarget.innerHTML = `<p style="font-size:0.8rem; opacity:0.5;">Aucune musique reçue.</p>`;
+            } else {
+                topPodiumTarget.innerHTML = sortedForTop.map((t, idx) => `
+                    <div class="top-list-item">
+                        <span class="top-item-rank">#${idx+1}</span>
+                        <span class="top-item-details"><strong>${escapeHtml(t.title)}</strong> - ${escapeHtml(t.artist)}</span>
+                        <span class="top-item-votes">${t.votes} ❤️</span>
+                    </div>
+                `).join('');
+            }
+
+            // 3. Filtrage du catalogue principal
+            let filteredTracks = [...playlistState];
+
+            if (activeFilter === 'to-play') {
+                filteredTracks = filteredTracks.filter(t => t.status !== 'played');
+            } else if (activeFilter === 'played') {
+                filteredTracks = filteredTracks.filter(t => t.status === 'played');
+            } else if (activeFilter === 'no-link') {
+                filteredTracks = filteredTracks.filter(t => !t.link);
+            } else if (activeFilter === 'has-link') {
+                filteredTracks = filteredTracks.filter(t => t.link);
+            }
+
+            // Recherche textuelle
+            if (searchQuery) {
+                filteredTracks = filteredTracks.filter(t => 
+                    t.title.toLowerCase().includes(searchQuery) ||
+                    t.artist.toLowerCase().includes(searchQuery) ||
+                    (t.sender && t.sender.toLowerCase().includes(searchQuery))
+                );
+            }
+
+            // 4. Algorithme de tri principal des requêtes
+            filteredTracks.sort((a, b) => {
+                // Règle d'or : La musique marquée "En cours" (current) reste ancrée TRÈS ABSOLUMENT au sommet
+                if (a.status === 'current') return -1;
+                if (b.status === 'current') return 1;
+
+                // Règle d'argent : Les musiques "Jouées" sont reléguées en fin de file d'attente globale
+                if (a.status === 'played' && b.status !== 'played') return 1;
+                if (b.status === 'played' && a.status !== 'played') return -1;
+
+                // Tri secondaire classique sélectionné
+                if (activeSort === 'votes') {
+                    return b.votes - a.votes;
+                } else if (activeSort === 'recent') {
+                    // Sécurité fallback par ID si non dispo
+                    return (b.id > a.id) ? 1 : -1;
+                } else if (activeSort === 'old') {
+                    return (a.id > b.id) ? 1 : -1;
+                }
+                return 0;
+            });
+
+            // 5. Génération et injection du code HTML
+            if (filteredTracks.length === 0) {
+                trackListContainer.innerHTML = `<div class="empty-state">Aucune suggestion ne correspond aux filtres ou critères sélectionnés.</div>`;
+                return;
+            }
+
+            let cardsHtml = "";
+            filteredTracks.forEach(track => {
+                let statusClass = "";
+                let badgeHtml = "";
+                let actionBtnHtml = "";
+
+                // Calcul du pourcentage de la barre graphique HTML/CSS
+                const graphPercentage = Math.min(100, Math.round((track.votes / maxVotesInDb) * 100));
+
+                if (track.status === 'current') {
+                    statusClass = "status-current";
+                    badgeHtml = `<span class="status-badge badge-current">📌 En cours</span>`;
+                    actionBtnHtml = `
+                        <button type="button" class="btn-action-card btn-played-action" onclick="changeTrackStatus('${track.id}', 'played')">✅ Jouée</button>
+                        <button type="button" class="btn-action-card btn-reset-action" onclick="changeTrackStatus('${track.id}', 'idle')">↩️ En attente</button>
+                    `;
+                } else if (track.status === 'played') {
+                    statusClass = "status-played";
+                    badgeHtml = `<span class="status-badge badge-played">✔ Jouée</span>`;
+                    actionBtnHtml = `
+                        <button type="button" class="btn-action-card btn-reset-action" onclick="changeTrackStatus('${track.id}', 'idle')">↩️ Remettre à jouer</button>
+                    `;
+                } else {
+                    // Statut standard libre (idle)
+                    actionBtnHtml = `
+                        <button type="button" class="btn-action-card btn-current-action" onclick="changeTrackStatus('${track.id}', 'current')">📌 En cours</button>
+                        <button type="button" class="btn-action-card btn-played-action" onclick="changeTrackStatus('${track.id}', 'played')">✅ Jouée</button>
+                    `;
+                }
+
+                // Intégration du bouton externe multimédia
+                let linkButton = "";
+                if (track.link) {
+                    linkButton = `<a href="${escapeHtml(track.link)}" target="_blank" class="btn-action-card link-btn-card">🔗 Lien</a>`;
+                }
+
+                cardsHtml += `
+                    <div class="dj-track-card ${statusClass}" id="card-${track.id}">
+                        <div class="track-row">
+                            <!-- Cellule des votes à gauche -->
+                            <div class="track-cell-votes">
+                                <span class="vote-badge-huge">${track.votes || 0}</span>
+                                <span class="vote-badge-label">Votes</span>
+                                <!-- Graphique pur HTML/CSS demandé -->
+                                <div class="vote-graph-bar-container" title="${graphPercentage}% de la demande max.">
+                                    <div class="vote-graph-fill" style="width: ${graphPercentage}%;"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Information de la musique au centre -->
+                            <div class="track-cell-info">
+                                <div class="track-title-line">
+                                    ${escapeHtml(track.title)}
+                                    ${badgeHtml}
+                                </div>
+                                <div class="track-artist-line">🎤 ${escapeHtml(track.artist)}</div>
+                                <div class="track-meta-line">
+                                    👤 Suggéré par : <strong>${escapeHtml(track.sender || 'Anonyme')}</strong> 
+                                    ${track.time ? `• 🕒 Reçu à ${track.time}` : ''}
+                                </div>
+                            </div>
+
+                            <!-- Actions de régie DJ à droite -->
+                            <div class="track-cell-actions">
+                                ${linkButton}
+                                ${actionBtnHtml}
+                                <button type="button" class="btn-action-card btn-delete-action" onclick="deleteTrack('${track.id}')">🗑️ Supprimer</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            trackListContainer.innerHTML = cardsHtml;
+        }
+
+        // ==========================================
+        // METHODES ET MUTATIONS D'ETAT LOGIQUE
+        // ==========================================
+        
+        // Commutation des statuts d'écoute d'une piste
+        function changeTrackStatus(trackId, newStatus) {
+            // Règle d'or : Si un titre est marqué "En cours", l'ancien titre "En cours" retourne en "En attente" (idle)
+            if (newStatus === 'current') {
+                playlistState.forEach(t => {
+                    if (t.status === 'current') t.status = 'idle';
+                });
+            }
+
+            const track = playlistState.find(t => t.id === trackId);
+            if (track) {
+                track.status = newStatus;
+                pushStateToServer();
+            }
+        }
+
+        // Suppression chirurgicale d'une chanson unique
+        function deleteTrack(trackId) {
+            playlistState = playlistState.filter(t => t.id !== trackId);
+            pushStateToServer();
+        }
+
+        // Purge globale de la base
+        function executePurgeAll() {
+            playlistState = [];
+            pushStateToServer();
+        }
+
+        // Fallback démo locale si variables non configurées
+        function loadBackupLocalDemo() {
+            playlistState = [
+                { id: "id_1", title: "Cotton Eye Joe", artist: "Rednex", sender: "Elouan", votes: 14, time: "22:15", status: "current", link: "https://youtube.com" },
+                { id: "id_2", title: "Old Town Road", artist: "Lil Nas X", sender: "Cécile", votes: 9, time: "21:30", status: "idle", link: "" },
+                { id: "id_3", title: "9 to 5", artist: "Dolly Parton", sender: "Camille", votes: 4, time: "22:45", status: "played", link: "https://spotify.com" },
+                { id: "id_4", title: "Man! I Feel Like a Woman!", artist: "Shania Twain", sender: "Marc", votes: 11, time: "23:02", status: "idle", link: "" }
+            ];
+            const d = new Date();
+            syncTimeLbl.innerText = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')} (DEMO)`;
+            renderDJInterface();
+        }
+
+        // Anti-injection XSS de sécurité
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
