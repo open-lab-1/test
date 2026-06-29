@@ -755,8 +755,8 @@
            3. Copiez le Bin ID et votre Master Key (ou Access Key) ci-dessous.
            Attention de laisser les variables vides ou d'y mettre vos accès pour la production.
         */
-        const BIN_ID = "67715ec3e41b4d34e46be989"; // Remplace par ton BIN ID
-        const API_KEY = "$2a$10$wbyHn6z88I2A26ZgH.4Bbe7.EwRym6E1260Wq3YnS8b6zVlQo2S0C"; // Remplace par ton API Key (X-Master-Key ou X-Access-Key)
+        const BIN_ID = "6a4260f4da38895dfe0fb93e"; // Remplace par ton BIN ID
+        const API_KEY = "$2a$10$JMtaTZvVsh7DqVnO5nSrRO3phGsvXdWV9iGfF4PtO4bVszpNpJsn2"; // Remplace par ton API Key (X-Master-Key ou X-Access-Key)
         
         const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
